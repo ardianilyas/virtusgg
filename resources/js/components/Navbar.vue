@@ -22,7 +22,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
                     </svg>
                 </button>
-                <PrimaryLink href="/" label="Sign In" />
+                <PrimaryLink :href="route('signin')" label="Sign In" />
             </div>
         </nav>
         <div v-show="showMenu" class="md:hidden fixed top-0 left-0 w-full h-screen bg-gray-100 z-50 transition-transform duration-300 ease-in-out" :style="{ transform: showMenu ? 'translateX(0)' : 'translateX(-100%)' }">
