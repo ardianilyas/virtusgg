@@ -15,6 +15,14 @@
                 <li>
                     <NavLink href="/" label="Pricing" />
                 </li>
+                <li v-if="isAuthenticated">
+                    <NavLink href="/" label="Dashboard" />
+                </li>
+                <li v-if="isAuthenticated">
+                    <form @submit.prevent="logout">
+                        <button type="submit" class="text-neutral-500 hover:text-red-500">Logout</button>
+                    </form>
+                </li>
             </ul>
             <div class="flex gap-2">
                 <button class="block md:hidden" @click="showMenu = !showMenu">
@@ -22,7 +30,8 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5" />
                     </svg>
                 </button>
-                <PrimaryLink :href="route('signin')" label="Sign In" />
+                <PrimaryLink v-if="!isAuthenticated" :href="route('signin')" label="Sign In" />
+                <p v-if="isAuthenticated">Welcome, {{ user.name }}</p>
             </div>
         </nav>
         <div v-show="showMenu" class="md:hidden fixed top-0 left-0 w-full h-screen bg-gray-100 z-50 transition-transform duration-300 ease-in-out" :style="{ transform: showMenu ? 'translateX(0)' : 'translateX(-100%)' }">
@@ -52,6 +61,10 @@
 import NavLink from "./NavLink.vue";
 import { Link } from "@inertiajs/inertia-vue3";
 import PrimaryLink from "./PrimaryLink.vue";
+import { useAuth } from "@/composables/useAuth.js";
+import { Inertia } from "@inertiajs/inertia";
+import { toast } from "vue-sonner";
+
 export default {
     components: {
         NavLink,
@@ -59,9 +72,18 @@ export default {
         PrimaryLink,
     },
     data() {
+        const { user, isAuthenticated } = useAuth()
         return {
             showMenu: false,
+            user, isAuthenticated
         };
     },
+    methods: {
+        logout() {
+            Inertia.post('/logout', {}, {
+                onSuccess: () => toast.success("Logout successfully")
+            })
+        }
+    }
 };
 </script>

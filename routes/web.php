@@ -9,4 +9,9 @@ Route::get('/', function () {
 
 Route::middleware('guest')->group(function () {
    Route::get('/signin', [SignInController::class, 'index'])->name('signin');
+   Route::post('/signin', [SignInController::class, 'authenticate'])->name('signin.authenticate');
+});
+
+Route::middleware('auth')->group(function () {
+  Route::post('/logout', [SignInController::class, 'logout'])->name('logout');
 });
