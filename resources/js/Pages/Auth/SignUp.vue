@@ -1,12 +1,17 @@
 <template>
     <AuthLayout>
         <template #title>
-            Welcome back
+            Create an account
         </template>
         <template #subtitle>
-            Dont have an account ? <Link :href="route('signup')" class="text-blue-500 hover:text-blue-600 underline underline-offset-6">signup here</Link>
+            Already have an account ? <Link :href="route('signin')" class="text-blue-500 hover:text-blue-600 underline underline-offset-6">signin here</Link>
         </template>
         <form class="mt-4 [&>div]:my-3" @submit.prevent="submit">
+            <div>
+                <Label>Name</Label>
+                <Input v-model="form.name" type="text" placeholder="Virtus Team" />
+                <InputError v-if="form.errors.name">{{ form.errors.name }}</InputError>
+            </div>
             <div>
                 <Label>Email</Label>
                 <Input v-model="form.email" type="email" placeholder="team@virtus.gg" />
@@ -18,7 +23,7 @@
                 <InputError v-if="form.errors.password">{{ form.errors.password }}</InputError>
             </div>
             <div>
-                <Button :disabled="form.processing" type="submit">Signin</Button>
+                <Button :disabled="form.processing" type="submit">Signup</Button>
             </div>
         </form>
     </AuthLayout>
@@ -26,22 +31,23 @@
 
 <script setup>
 import AuthLayout from "@/Layouts/AuthLayout.vue";
-import { Input } from "@/components/ui/input/index.js";
-import { Label } from "@/components/ui/label/index.js";
-import { Button } from "@/components/ui/button/index.js";
-import {useForm} from "@inertiajs/inertia-vue3";
-import InputError from "@/components/InputError.vue";
-import { toast } from "vue-sonner";
 import { Link } from "@inertiajs/inertia-vue3";
+import { Label } from "@/components/ui/label/index.js";
+import { Input } from "@/components/ui/input/index.js";
+import { Button } from "@/components/ui/button/index.js";
+import { useForm } from "@inertiajs/inertia-vue3";
+import {toast} from "vue-sonner";
+import InputError from "@/components/InputError.vue";
 
 const form = useForm({
-    email: 'ardian@virtus.gg',
-    password: 'developer'
-});
+    name: null,
+    email: null,
+    password: null
+})
 
 const submit = () => {
-    form.post(route('signin.authenticate'), {
-        onSuccess: () => toast.success("Signin successfully")
+    form.post(route('signup.store'), {
+        onSuccess: () => toast.success("Signup successfully")
     })
 }
 </script>
