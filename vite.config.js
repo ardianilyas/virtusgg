@@ -4,11 +4,6 @@ import vue from '@vitejs/plugin-vue';
 import inertiaLayout from 'momentum-layout'
 
 export default defineConfig({
-    resolve: {
-        alias: {
-            'ziggy-js': path.resolve('vendor/tightenco/ziggy'),
-        }
-    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
