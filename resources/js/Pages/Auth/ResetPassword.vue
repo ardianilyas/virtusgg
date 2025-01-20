@@ -1,12 +1,15 @@
 <template>
     <AuthLayout>
         <template #title>
-            Welcome back
+            Reset password
         </template>
         <template #subtitle>
-            Dont have an account ? <Link :href="route('signup')" class="text-blue-500 hover:text-blue-600 underline underline-offset-6">signup here</Link>
+            Input your new password
         </template>
-        <form class="mt-4 [&>div]:my-3" @submit.prevent="submit">
+        <form class="[&>div]:my-3" @submit.prevent="submit">
+            <div>
+                <Input type="hidden" />
+            </div>
             <div>
                 <Label>Email</Label>
                 <Input v-model="form.email" type="email" placeholder="team@virtus.gg" />
@@ -14,14 +17,16 @@
             </div>
             <div>
                 <Label>Password</Label>
-                <Input v-model="form.password" type="password" placeholder="********" />
+                <Input v-model="form.password" type="password" placeholder="*******" />
                 <InputError v-if="form.errors.password">{{ form.errors.password }}</InputError>
             </div>
             <div>
-                <Link :href="route('password.request')" class="text-xs text-blue-500 hover:text-blue-600 underline underline-offset-4">Forgot password</Link>
+                <Label>Password Confirmation</Label>
+                <Input v-model="form.password_confirmation" type="password" placeholder="*******" />
+                <InputError v-if="form.errors.password_confirmation">{{ form.errors.password_confirmation }}</InputError>
             </div>
             <div>
-                <Button :disabled="form.processing" type="submit">Signin</Button>
+                <Button type="submit">Reset password</Button>
             </div>
         </form>
     </AuthLayout>
@@ -31,20 +36,26 @@
 import AuthLayout from "@/Layouts/AuthLayout.vue";
 import { Input } from "@/components/ui/input/index.js";
 import { Label } from "@/components/ui/label/index.js";
-import { Button } from "@/components/ui/button/index.js";
-import {useForm} from "@inertiajs/inertia-vue3";
-import InputError from "@/components/InputError.vue";
+import { useForm } from "@inertiajs/inertia-vue3";
 import { toast } from "vue-sonner";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Button } from "@/components/ui/button/index.js";
+import InputError from "@/components/InputError.vue";
+
+ const props = defineProps({
+    token: String,
+    status: String
+})
 
 const form = useForm({
-    email: 'ardian@virtus.gg',
-    password: 'developer'
-});
+    token: props.token,
+    email: null,
+    password: null,
+    password_confirmation: null
+})
 
 const submit = () => {
-    form.post(route('signin.authenticate'), {
-        onSuccess: () => toast.success("Signin successfully"),
-    })
+     form.post(route('password.update'), {
+         onSuccess: () => toast.success("Password reset successfully")
+     })
 }
 </script>
