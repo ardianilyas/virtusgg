@@ -20,7 +20,7 @@
                 </li>
                 <li v-if="isAuthenticated">
                     <form @submit.prevent="logout">
-                        <button type="submit" class="text-neutral-500 hover:text-red-500">Logout</button>
+                        <button type="submit" class="font-light text-neutral-600 hover:text-red-500">Logout</button>
                     </form>
                 </li>
             </ul>
