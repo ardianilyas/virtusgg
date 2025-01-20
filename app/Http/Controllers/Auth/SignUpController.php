@@ -18,7 +18,11 @@ class SignUpController extends Controller
     public function store(SignUpRequest $request)
     {
         $user = User::create($request->validated());
+
         Auth::login($user);
+
+        $user->sendEmailVerificationNotification();
+
         return redirect()->intended();
     }
 }
