@@ -19,9 +19,23 @@
                     <NavLink href="/" label="Dashboard" />
                 </li>
                 <li v-if="isAuthenticated">
-                    <form @submit.prevent="logout">
-                        <button type="submit" class="font-light text-neutral-600 hover:text-red-500">Logout</button>
-                    </form>
+                    <Dialog>
+                        <DialogTrigger class="font-light text-neutral-600 hover:text-red-500">Logout</DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Are you sure want to logout ?</DialogTitle>
+                                <DialogDescription>Lorem ipsum dolor sit amet, consectetur.</DialogDescription>
+                            </DialogHeader>
+                            <DialogFooter class="sm:justify-start">
+                                <DialogClose as-child>
+                                    <Button variant="secondary">Cancel</Button>
+                                </DialogClose>
+                                <form @submit.prevent="logout">
+                                    <Button type="submit" variant="destructive">Confirm</Button>
+                                </form>
+                            </DialogFooter>
+                        </DialogContent>
+                    </Dialog>
                 </li>
             </ul>
             <div class="flex gap-2">
@@ -64,9 +78,27 @@ import PrimaryLink from "./PrimaryLink.vue";
 import { useAuth } from "@/composables/useAuth.js";
 import { Inertia } from "@inertiajs/inertia";
 import { toast } from "vue-sonner";
+import {
+    Dialog, DialogClose,
+    DialogContent,
+    DialogDescription, DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog/index.js";
+import {Button} from "@/components/ui/button/index.js";
 
 export default {
     components: {
+        DialogClose,
+        DialogFooter,
+        DialogDescription,
+        DialogTitle,
+        DialogHeader,
+        DialogContent,
+        Button,
+        DialogTrigger,
+        Dialog,
         NavLink,
         Link,
         PrimaryLink,
