@@ -16,7 +16,7 @@
                     <NavLink href="/" label="Pricing" />
                 </li>
                 <li v-if="isAuthenticated">
-                    <NavLink href="/" label="Dashboard" />
+                    <NavLink :href="route('dashboard.index')" label="Dashboard" />
                 </li>
                 <li v-if="isAuthenticated">
                     <Dialog>
