@@ -14,6 +14,7 @@
                         <TableHead>No</TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Description</TableHead>
+                        <TableHead>Created at</TableHead>
                         <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
@@ -22,6 +23,7 @@
                         <TableCell>{{ index + 1 }}</TableCell>
                         <TableCell>{{ organization.name }}</TableCell>
                         <TableCell>{{ organization.description }}</TableCell>
+                        <TableCell>{{ organization.created_at }}</TableCell>
                         <TableCell>
                             <DropdownMenu>
                                 <DropdownMenuTrigger>

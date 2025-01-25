@@ -14,6 +14,13 @@ class Organization extends Model
 
     protected $guarded = ['id'];
 
+    public function casts(): array {
+        return [
+            'created_at' => 'datetime:m F Y, H:i:s',
+            'updated_at' => 'datetime:m F Y, H:i:s',
+        ];
+    }
+
     public function owner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'owner_id');
