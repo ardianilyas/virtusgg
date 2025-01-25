@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Auth\SignInController;
 use App\Http\Controllers\Auth\SignUpController;
 use App\Http\Controllers\Dashboard\DashboardIndexController;
+use App\Http\Controllers\Dashboard\OrganizationController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -40,4 +41,6 @@ Route::middleware('guest')->group(function () {
 // Dashboard routes
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')->group(function () {
    Route::get('/', [DashboardIndexController::class, 'index'])->name('index');
+
+   Route::resource('organizations', OrganizationController::class);
 });
