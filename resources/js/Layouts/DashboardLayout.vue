@@ -1,5 +1,5 @@
 <template>
-    <Toaster richColors closeButton />
+    <Toaster richColors position="top-right" closeButton />
     <div class="flex h-screen bg-neutral-50 dark:bg-neutral-900">
         <aside
             :class="{
@@ -17,9 +17,14 @@
                 </div>
 
                 <nav class="p-4">
-                    <SidebarLink href="dashboard" label="Dashboard">
+                    <SidebarLink :href="route('dashboard.index')" label="Dashboard" :isActive="route().current('dashboard.index')">
                         <template #icon>
                             <DashboardIcon />
+                        </template>
+                    </SidebarLink>
+                    <SidebarLink :href="route('dashboard.organizations.index')" label="Organization" :isActive="route().current('dashboard.organizations.*')">
+                        <template #icon>
+                            <MixerVerticalIcon />
                         </template>
                     </SidebarLink>
                 </nav>
@@ -72,6 +77,9 @@
                     </h1>
                 </header>
                 <div class="p-6">
+                    <p class="mb-2 text-neutral-600 leading-loose">
+                        <slot name="desc" />
+                    </p>
                     <slot />
                 </div>
             </div>
@@ -83,7 +91,7 @@
 import {ref, onMounted, onUnmounted, computed} from 'vue';
 import { usePage } from "@inertiajs/vue3";
 import SidebarLink from '@/components/SidebarLink.vue';
-import { Cross2Icon, DashboardIcon, HamburgerMenuIcon, HomeIcon, ReaderIcon, SunIcon, MoonIcon, BackpackIcon } from '@radix-icons/vue';
+import { Cross2Icon, DashboardIcon, HamburgerMenuIcon, HomeIcon, ReaderIcon, SunIcon, MoonIcon, BackpackIcon, MixerVerticalIcon } from '@radix-icons/vue';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -116,6 +124,7 @@ export default {
         HomeIcon,
         SunIcon,
         MoonIcon,
+        MixerVerticalIcon,
         Button,
         DropdownMenu,
         DropdownMenuContent,
