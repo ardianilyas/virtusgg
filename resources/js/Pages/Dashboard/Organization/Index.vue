@@ -14,6 +14,7 @@
                         <TableHead>No</TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Description</TableHead>
+                        <TableHead>Status</TableHead>
                         <TableHead>Created at</TableHead>
                         <TableHead>Actions</TableHead>
                     </TableRow>
@@ -23,6 +24,7 @@
                         <TableCell>{{ index + 1 }}</TableCell>
                         <TableCell>{{ organization.name }}</TableCell>
                         <TableCell>{{ organization.description }}</TableCell>
+                        <TableCell class="capitalize" :class="organization.status === 'active' ? 'text-green-400' : 'text-red-500' ">{{ organization.status }}</TableCell>
                         <TableCell>{{ organization.created_at }}</TableCell>
                         <TableCell>
                             <DropdownMenu>
