@@ -37,7 +37,9 @@
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
                                       <Dialog>
-                                        <DialogTrigger @click.stop>Delete</DialogTrigger>
+                                        <DialogTrigger @click.stop as-child>
+                                          <button type="button">Delete</button>
+                                        </DialogTrigger>
                                         <DialogContent>
                                           <DialogHeader>
                                             <DialogTitle>Are you sure ?</DialogTitle>
