@@ -11,7 +11,7 @@
             <div>
                 <div class="flex items-center justify-between p-4">
                     <h2 class="text-2xl px-4 text-center font-semibold text-neutral-800 dark:text-neutral-100">Patungan</h2>
-                    <button @click="toggleSidebar" class="md:hidden focus:outline-none">
+                    <button @click="toggleSidebar" class="md:hidden focus:outline-hidden">
                         <Cross2Icon class="h-4 w-4 text-neutral-800 dark:text-neutral-100" />
                     </button>
                 </div>
@@ -68,7 +68,7 @@
             :class="{ 'ml-0': !isSidebarOpen && !isDesktop }"
         >
             <div class="text-neutral-800 dark:text-neutral-100">
-                <header class="flex justify-between items-center p-6 bg-neutral-100 dark:bg-neutral-950 shadow-sm border-b border-neutral-200 dark:border-neutral-600">
+                <header class="flex justify-between items-center p-6 bg-neutral-100 dark:bg-neutral-950 shadow-xs border-b border-neutral-200 dark:border-neutral-600">
                     <button @click="toggleSidebar" class="md:hidden">
                         <HamburgerMenuIcon class="h-4 w-4 text-neutral-800 dark:text-neutral-100" />
                     </button>
