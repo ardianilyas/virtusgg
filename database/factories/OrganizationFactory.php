@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enum\OrganizationStatusEnum;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,7 +22,7 @@ class OrganizationFactory extends Factory
             'name' => fake()->word(),
             'description' => fake()->sentence(),
             'owner_id' => User::all()->random()->id,
-            'status' => fake()->randomElement(['active', 'inactive']),
+            'status' => fake()->randomElement(OrganizationStatusEnum::cases()),
         ];
     }
 }
