@@ -9,9 +9,7 @@
 </template>
 
 <script>
-import { computed } from 'vue';
 import { Link } from '@inertiajs/inertia-vue3'
-import { usePage } from "@inertiajs/inertia-vue3";
 
 export default {
     components: {
@@ -26,13 +24,10 @@ export default {
             type: String,
             required: true,
         },
-    },
-    setup(props) {
-        const page = usePage();
-        const isActive = computed(() => {
-            return page.props.value.url === props.href
-        });
-        return { isActive };
+        isActive: {
+            type: Boolean,
+            required: true,
+        },
     },
 };
 </script>
