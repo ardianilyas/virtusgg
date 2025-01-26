@@ -3,7 +3,6 @@
 
         <template #desc>Manage your organization here.</template>
 
-
         <Card class="my-6">
             <ButtonCreate class="mb-3">
               <Link :href="route('dashboard.organizations.create')">Create new organization</Link>
@@ -21,7 +20,7 @@
                 </TableHeader>
                 <TableBody>
                     <TableRow v-for="(organization, index) in organizations.data" :key="organization.id">
-                        <TableCell>{{ index + 1 }}</TableCell>
+                        <TableCell>{{ displayNumber(organizations, index) }}</TableCell>
                         <TableCell>{{ organization.name }}</TableCell>
                         <TableCell>{{ organization.description }}</TableCell>
                         <TableCell class="capitalize" :class="organization.status === 'active' ? 'text-green-400' : 'text-red-500' ">{{ organization.status }}</TableCell>
@@ -71,6 +70,7 @@
 
 <script setup>
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
+import { displayNumber } from "@/helpers/helpers.js";
 import { Button } from "@/components/ui/button/index.js";
 import { Link, useForm } from "@inertiajs/inertia-vue3";
 import Card from "@/components/Card.vue";
