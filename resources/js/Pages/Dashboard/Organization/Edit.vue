@@ -19,6 +19,20 @@
           <InputError v-if="form.errors.description">{{ form.errors.description }}</InputError>
         </div>
         <div>
+          <Label>Status</Label>
+          <Select v-model="form.status">
+            <SelectTrigger>
+              <SelectValue placeholder="Choose status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup v-for="(status, index) in statuses" :key="index">
+                <SelectItem :value="status">{{ status }}</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <InputError v-if="form.errors.status">{{ form.errors.status }}</InputError>
+        </div>
+        <div>
           <Button type="submit" :disabled="form.processing">Edit organization</Button>
         </div>
       </form>
@@ -36,14 +50,24 @@ import { Button } from "@/components/ui/button/index.js";
 import { toast } from "vue-sonner";
 import InputError from "@/components/InputError.vue";
 import BackLink from "@/components/BackLink.vue";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select/index.js";
 
 const props = defineProps({
-  organization: Object
+  organization: Object,
+  statuses: Array,
 })
 
 const form = useForm({
   name: props.organization.name,
   description: props.organization.description,
+  status: props.organization.status
 })
 
 const submit = () => {

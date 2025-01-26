@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enum\OrganizationStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\CreateOrganizationRequest;
 use App\Http\Requests\Dashboard\UpdateOrganizationRequest;
@@ -26,7 +27,8 @@ class OrganizationController extends Controller
     }
 
     public function edit(Organization $organization) {
-        return inertia('Dashboard/Organization/Edit', compact('organization'));
+        $statuses = OrganizationStatusEnum::cases();
+        return inertia('Dashboard/Organization/Edit', compact('organization', 'statuses'));
     }
 
     public function update(UpdateOrganizationRequest $request, Organization $organization) {
