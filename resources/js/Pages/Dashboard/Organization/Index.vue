@@ -20,7 +20,7 @@
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    <TableRow v-for="(organization, index) in organizations" :key="organization.id">
+                    <TableRow v-for="(organization, index) in organizations.data" :key="organization.id">
                         <TableCell>{{ index + 1 }}</TableCell>
                         <TableCell>{{ organization.name }}</TableCell>
                         <TableCell>{{ organization.description }}</TableCell>
@@ -64,6 +64,7 @@
                     </TableRow>
                 </TableBody>
             </Table>
+          <Pagination :links="organizations" />
         </Card>
     </DashboardLayout>
 </template>
@@ -91,6 +92,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from "@/components/ui/dialog/index.js";
+import Pagination from "@/components/Pagination.vue";
 
 const deleteForm = useForm({})
 

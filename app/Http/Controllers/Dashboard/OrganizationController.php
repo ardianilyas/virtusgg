@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class OrganizationController extends Controller
 {
     public function index() {
-        $organizations = Auth::user()->organizations;
+        $organizations = Auth::user()->organizations()->paginate(5);
         return inertia('Dashboard/Organization/Index', compact('organizations'));
     }
 
