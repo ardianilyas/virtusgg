@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,10 +15,14 @@ class Organization extends Model
 
     protected $guarded = ['id'];
 
+    protected function serializeDate(DateTimeInterface $date): string {
+        return $date->setTimezone("Asia/Jakarta")->format("d F Y, H:i:s");
+    }
+
     public function casts(): array {
         return [
-            'created_at' => 'datetime:m F Y, H:i:s',
-            'updated_at' => 'datetime:m F Y, H:i:s',
+            'created_at' => 'datetime:d F Y, H:i:s',
+            'updated_at' => 'datetime:d F Y, H:i:s',
         ];
     }
 
