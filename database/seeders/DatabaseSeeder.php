@@ -24,11 +24,13 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('developer')
         ]);
 
+        User::factory(3)->create();
+
         $developer = Role::create(['name' => 'developer']);
         $admin = Role::create(['name' => 'admin']);
 
         $dev->assignRole($developer);
 
-        OrganizationMember::factory(3)->create();
+        OrganizationMember::factory(12)->create();
     }
 }

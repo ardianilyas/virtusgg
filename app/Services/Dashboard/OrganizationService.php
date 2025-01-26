@@ -34,7 +34,29 @@ class OrganizationService
         ]);
     }
 
-    public function createOrganizationMember($data) {
+    public function getOrganization($code) {
+        return Organization::where('code', $code)->first();
+    }
 
+    public function isAlreadyMember($organization, $userId) {
+        return OrganizationMember::where('organization_id', $organization->id)->where('user_id', $userId)->exists();
+    }
+
+    public function joinOrganization($code) {
+        $organization = $this->getOrganization($code);
+        $isAlreadyMember = $this->isAlreadyMember($organization, Auth::id());
+
+        if ($isAlreadyMember) {
+            return back()->withErrors(['code', 'You have already joined the organization']);
+        } else {
+            return $this->createOrganizationMember($organization->id, Auth::id());
+        }
+    }
+
+    public function createOrganizationMember($organizationId, $userId) {
+        return OrganizationMember::create([
+            'organization_id' => $organizationId,
+            'user_id' => $userId,
+        ]);
     }
 }

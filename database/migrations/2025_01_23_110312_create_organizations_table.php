@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->foreignUuid('owner_id')->constrained('users')->onDelete('cascade');
+            $table->string('code')->unique()->nullable();
             $table->enum('status', array_column(OrganizationStatusEnum::cases(), 'value'))->default(OrganizationStatusEnum::ACTIVE->value);
             $table->timestamps();
         });

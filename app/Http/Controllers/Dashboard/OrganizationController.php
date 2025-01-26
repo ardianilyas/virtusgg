@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Enum\OrganizationStatusEnum;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Dashboard\CreateOrganizationRequest;
-use App\Http\Requests\Dashboard\UpdateOrganizationRequest;
+use App\Http\Requests\Dashboard\Organization\CreateOrganizationRequest;
+use App\Http\Requests\Dashboard\Organization\JoinOrganizationRequest;
+use App\Http\Requests\Dashboard\Organization\UpdateOrganizationRequest;
 use App\Models\Organization;
+use App\Models\OrganizationMember;
 use App\Services\Dashboard\OrganizationService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
@@ -40,6 +40,11 @@ class OrganizationController extends Controller
 
     public function destroy(Organization $organization) {
         $organization->delete();
+        return back();
+    }
+
+    public function join(JoinOrganizationRequest $request, OrganizationService $organizationService) {
+        $organizationService->joinOrganization($request->validated());
         return back();
     }
 }
