@@ -7,13 +7,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\CreateOrganizationRequest;
 use App\Http\Requests\Dashboard\UpdateOrganizationRequest;
 use App\Models\Organization;
+use App\Services\Dashboard\OrganizationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
-    public function index() {
-        $organizations = Auth::user()->organizations()->paginate(5);
+    public function index(OrganizationService $organizationService) {
+        $organizations = $organizationService->getLatestOrganizationsPaginate();
         return inertia('Dashboard/Organization/Index', compact('organizations'));
     }
 
@@ -21,8 +22,9 @@ class OrganizationController extends Controller
         return inertia('Dashboard/Organization/Create');
     }
 
-    public function store(CreateOrganizationRequest $request) {
-        Auth::user()->organizations()->create($request->validated());
+    public function store(CreateOrganizationRequest $request, OrganizationService $organizationService) {
+        $organization = $organizationService->createOrganization($request->validated());
+        $organizationService->createOrganizationOwner($organization['id']);
         return redirect()->route('dashboard.organizations.index');
     }
 

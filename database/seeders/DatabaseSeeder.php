@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Organization;
+use App\Models\OrganizationMember;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -28,6 +29,6 @@ class DatabaseSeeder extends Seeder
 
         $dev->assignRole($developer);
 
-        Organization::factory(8)->create();
+        OrganizationMember::factory(3)->create();
     }
 }
