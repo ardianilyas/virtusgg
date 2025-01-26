@@ -40,7 +40,7 @@
                             <DropdownMenuLabel>Welcome, {{ user.email }}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
-                                <Link href="/">Homepage</Link>
+                                <Link :href="route('index')">Homepage</Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <form @submit.prevent="logout">
@@ -88,8 +88,7 @@
 </template>
 
 <script>
-import {ref, onMounted, onUnmounted, computed} from 'vue';
-import { usePage } from "@inertiajs/vue3";
+import { ref, onMounted, onUnmounted } from 'vue';
 import SidebarLink from '@/components/SidebarLink.vue';
 import { Cross2Icon, DashboardIcon, HamburgerMenuIcon, HomeIcon, ReaderIcon, SunIcon, MoonIcon, BackpackIcon, MixerVerticalIcon } from '@radix-icons/vue';
 import {
@@ -107,10 +106,10 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { Link, router } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/inertia-vue3'
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "vue-sonner"
-import {useAuth} from "@/composables/useAuth.js";
+import { useAuth } from "@/composables/useAuth.js";
 
 export default {
     components: {
@@ -148,8 +147,7 @@ export default {
         auth: Array,
     },
 
-    setup(props) {
-        const page = usePage();
+    setup() {
         const isSidebarOpen = ref(false);
         const isDesktop = ref(window.innerWidth >= 768);
         const { user, isAuthenticated } = useAuth()
@@ -157,8 +155,9 @@ export default {
             isSidebarOpen.value = !isSidebarOpen.value;
         };
 
+        const logoutForm = useForm({})
         const logout = () => {
-            router.post('/logout', {}, {
+            logoutForm.post(route('logout'), {
                 onSuccess: () => toast.success("Logout successfully")
             })
         }
