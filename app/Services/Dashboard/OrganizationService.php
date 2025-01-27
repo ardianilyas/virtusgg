@@ -3,8 +3,10 @@
 namespace App\Services\Dashboard;
 
 use App\Enum\OrganizationMemberRoleEnum;
+use App\Events\OrganizationJoinRequested;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class OrganizationService
@@ -46,15 +48,21 @@ class OrganizationService
         return OrganizationMember::where('organization_id', $organization->id)->where('user_id', $userId)->exists();
     }
 
-    public function joinOrganization($code) {
+    public function requestToJoinOrganization($code) {
         $organization = $this->getOrganization($code);
+        $user = Auth::user();
         $isAlreadyMember = $this->isAlreadyMember($organization, Auth::id());
 
         if ($isAlreadyMember) {
             return back()->withErrors(['code', 'You have already joined the organization']);
         } else {
-            return $this->createOrganizationMember($organization->id, Auth::id());
+            $this->sendEventRequestJoinOrganization($user, $organization);
         }
+    }
+
+    public function sendEventRequestJoinOrganization(User $user, Organization $organization) {
+        return OrganizationJoinRequested::dispatch($user
+        ,$organization);
     }
 
     public function createOrganizationMember($organizationId, $userId) {
