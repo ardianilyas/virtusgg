@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enum\OrganizationMemberRoleEnum;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\User;
@@ -24,13 +25,31 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('developer')
         ]);
 
-        User::factory(3)->create();
+        $users = User::factory(10)->create();
 
         $developer = Role::create(['name' => 'developer']);
         $admin = Role::create(['name' => 'admin']);
 
         $dev->assignRole($developer);
 
-        OrganizationMember::factory(12)->create();
+        $organizations = Organization::factory(2)->create()->each(function ($organization) use ($users, $dev) {
+            $organization->creator_id = $dev->id;
+            $organization->save();
+
+            OrganizationMember::create([
+                'user_id' => $dev->id,
+                'organization_id' => $organization->id,
+                'is_creator' => true,
+                'role' => OrganizationMemberRoleEnum::OWNER->value,
+            ]);
+
+            $members = $users->whereNotIn('id', [$dev->id])->random(rand(3, 8));
+            foreach ($members as $member) {
+                OrganizationMember::create([
+                    'user_id' => $member->id,
+                    'organization_id' => $organization->id,
+                ]);
+            }
+        });
     }
 }

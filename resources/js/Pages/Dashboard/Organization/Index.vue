@@ -27,6 +27,7 @@
                         <TableHead>Name</TableHead>
                         <TableHead>Code</TableHead>
                         <TableHead>Description</TableHead>
+                        <TableHead>Total Members</TableHead>
                         <TableHead>Status</TableHead>
                         <TableHead>Created at</TableHead>
                         <TableHead>Actions</TableHead>
@@ -38,6 +39,7 @@
                         <TableCell>{{ organization.name }}</TableCell>
                         <TableCell>{{ organization.code }}</TableCell>
                         <TableCell>{{ organization.description }}</TableCell>
+                        <TableCell>{{ organization.members_count }}</TableCell>
                         <TableCell class="capitalize" :class="organization.status === 'active' ? 'text-green-400' : 'text-red-500' ">{{ organization.status }}</TableCell>
                         <TableCell>{{ organization.created_at }}</TableCell>
                         <TableCell>
@@ -50,6 +52,11 @@
                                 <DropdownMenuContent>
                                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
+                                    <DropdownMenuItem>
+                                      <Link :href="route('dashboard.organizations.show', organization.id)">
+                                        View
+                                      </Link>
+                                    </DropdownMenuItem>
                                     <DropdownMenuItem>
                                       <Link :href="route('dashboard.organizations.edit', organization.id)">Edit</Link>
                                     </DropdownMenuItem>

@@ -18,7 +18,11 @@ class OrganizationService
     }
 
     public function getLatestOrganizationsPaginate() {
-        return Auth::user()->organizations()->latest()->paginate(5);
+        return Auth::user()->organizations()->withCount('members')->latest()->paginate(5);
+    }
+
+    public function getOrganizationMembers(Organization $organization) {
+        return $organization->loadCount('members')->load('members');
     }
 
     public function createOrganization($data) {

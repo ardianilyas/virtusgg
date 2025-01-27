@@ -21,9 +21,8 @@ class OrganizationMemberFactory extends Factory
     {
         return [
             'organization_id' => Organization::factory(),
-            'user_id' => User::all()->random()->id,
-            'role' => fake()->randomElement(OrganizationMemberRoleEnum::cases()),
-            'is_creator' => true,
+            'user_id' => User::factory(),
+            'is_creator' => false,
         ];
     }
 }

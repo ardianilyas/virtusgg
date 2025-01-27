@@ -22,6 +22,11 @@ class OrganizationController extends Controller
         return inertia('Dashboard/Organization/Create');
     }
 
+    public function show(Organization $organization, OrganizationService $organizationService) {
+        $members = $organizationService->getOrganizationMembers($organization);
+        return inertia('Dashboard/Organization/View', compact('organization', 'members'));
+    }
+
     public function store(CreateOrganizationRequest $request, OrganizationService $organizationService) {
         $organization = $organizationService->createOrganization($request->validated());
         $organizationService->createOrganizationOwner($organization['id']);

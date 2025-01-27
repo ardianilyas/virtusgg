@@ -23,7 +23,7 @@ class OrganizationFactory extends Factory
             'name' => fake()->word(),
             'description' => fake()->sentence(),
             'code' => strtoupper(Str::random(6)),
-            'owner_id' => User::all()->random()->id,
+            'creator_id' => User::all()->random()->id,
             'status' => fake()->randomElement(OrganizationStatusEnum::cases()),
         ];
     }
