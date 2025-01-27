@@ -133,10 +133,6 @@ import { usePage } from "@inertiajs/inertia-vue3";
 
 const { props } = usePage()
 
-// onMounted(() => {
-//   if(props.flash?)
-// })
-
 const deleteForm = useForm({})
 
 const joinForm = useForm({
@@ -144,7 +140,7 @@ const joinForm = useForm({
 })
 
 const submitJoin = () => {
-  joinForm.post(route('dashboard.organizations.join'), {
+  joinForm.post(route('dashboard.organization.request'), {
     onSuccess: () => toast.success("Success join organization"),
     onError: (err) => toast.error(err.code ?? err[1])
   })

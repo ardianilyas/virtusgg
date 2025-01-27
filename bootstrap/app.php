@@ -1,6 +1,8 @@
 <?php
 
+use App\Events\OrganizationJoinRequested;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Listeners\SendOrganizationJoinRequestNotification;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;

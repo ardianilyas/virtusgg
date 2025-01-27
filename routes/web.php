@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
    // Route organizations
    Route::resource('organizations', OrganizationController::class);
+   Route::post('/organization/request', [OrganizationController::class, 'request'])->name('organization.request');
    Route::post('/organizations/join', [OrganizationController::class, 'join'])->name('organizations.join');
 
 });

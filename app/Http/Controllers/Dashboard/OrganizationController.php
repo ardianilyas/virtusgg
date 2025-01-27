@@ -3,13 +3,17 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Enum\OrganizationStatusEnum;
+use App\Events\OrganizationJoinRequested;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\Organization\CreateOrganizationRequest;
 use App\Http\Requests\Dashboard\Organization\JoinOrganizationRequest;
 use App\Http\Requests\Dashboard\Organization\UpdateOrganizationRequest;
+use App\Mail\OrganizationJoinRequestMail;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Services\Dashboard\OrganizationService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
@@ -48,8 +52,8 @@ class OrganizationController extends Controller
         return back();
     }
 
-    public function join(JoinOrganizationRequest $request, OrganizationService $organizationService) {
-        $organizationService->joinOrganization($request->validated());
+    public function request(JoinOrganizationRequest $request, OrganizationService $organizationService) {
+        $organizationService->requestToJoinOrganization($request->code);
         return back();
     }
 }
