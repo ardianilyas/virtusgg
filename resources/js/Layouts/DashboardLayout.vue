@@ -10,23 +10,23 @@
         >
             <div>
                 <div class="flex items-center justify-between p-4">
-                    <h2 class="text-2xl px-4 text-center font-semibold text-neutral-800 dark:text-neutral-100">Patungan</h2>
+                    <h2 class="text-2xl px-4 text-center font-semibold text-neutral-800 dark:text-neutral-100">Virtus.gg</h2>
                     <button @click="toggleSidebar" class="md:hidden focus:outline-none">
                         <Cross2Icon class="h-4 w-4 text-neutral-800 dark:text-neutral-100" />
                     </button>
                 </div>
 
                 <nav class="p-4">
-                    <SidebarLink :href="route('dashboard.index')" label="Dashboard" :isActive="route().current('dashboard.index')">
-                        <template #icon>
-                            <DashboardIcon />
-                        </template>
-                    </SidebarLink>
-                    <SidebarLink :href="route('dashboard.organizations.index')" label="Organization" :isActive="route().current('dashboard.organizations.*')">
-                        <template #icon>
-                            <MixerVerticalIcon />
-                        </template>
-                    </SidebarLink>
+                  <SidebarLink :href="route('dashboard.index')" label="Dashboard" :isActive="route().current('dashboard.index')">
+                      <template #icon>
+                          <DashboardIcon />
+                      </template>
+                  </SidebarLink>
+                  <SidebarLink :href="route('dashboard.organizations.index')" label="Organization" :isActive="route().current('dashboard.organizations.*')">
+                      <template #icon>
+                          <MixerVerticalIcon />
+                      </template>
+                  </SidebarLink>
                 </nav>
             </div>
 
@@ -40,7 +40,7 @@
                             <DropdownMenuLabel>Welcome, {{ user.email }}</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
-                                <Link href="/">Homepage</Link>
+                                <Link :href="route('index')">Homepage</Link>
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                                 <form @submit.prevent="logout">
@@ -88,10 +88,11 @@
 </template>
 
 <script>
-import {ref, onMounted, onUnmounted, computed} from 'vue';
-import { usePage } from "@inertiajs/vue3";
+import { ref, onMounted, onUnmounted } from 'vue';
 import SidebarLink from '@/components/SidebarLink.vue';
+import DropdownSidebarLink from "@/components/DropdownSidebarLink.vue";
 import { Cross2Icon, DashboardIcon, HamburgerMenuIcon, HomeIcon, ReaderIcon, SunIcon, MoonIcon, BackpackIcon, MixerVerticalIcon } from '@radix-icons/vue';
+import DropdownSidebar from "@/components/DropdownSidebar.vue";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -107,38 +108,40 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { Link, router } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/inertia-vue3'
 import { Toaster } from "@/components/ui/sonner"
 import { toast } from "vue-sonner"
-import {useAuth} from "@/composables/useAuth.js";
+import { useAuth } from "@/composables/useAuth.js";
 
 export default {
     components: {
-        Link,
-        Toaster,
-        HamburgerMenuIcon,
-        BackpackIcon,
-        Cross2Icon,
-        DashboardIcon,
-        ReaderIcon,
-        HomeIcon,
-        SunIcon,
-        MoonIcon,
-        MixerVerticalIcon,
-        Button,
-        DropdownMenu,
-        DropdownMenuContent,
-        DropdownMenuGroup,
-        DropdownMenuItem,
-        DropdownMenuLabel,
-        DropdownMenuPortal,
-        DropdownMenuSeparator,
-        DropdownMenuShortcut,
-        DropdownMenuSub,
-        DropdownMenuSubContent,
-        DropdownMenuSubTrigger,
-        DropdownMenuTrigger,
-        SidebarLink
+      DropdownSidebar,
+      DropdownSidebarLink,
+      Link,
+      Toaster,
+      MixerVerticalIcon,
+      HamburgerMenuIcon,
+      BackpackIcon,
+      Cross2Icon,
+      DashboardIcon,
+      ReaderIcon,
+      HomeIcon,
+      SunIcon,
+      MoonIcon,
+      Button,
+      DropdownMenu,
+      DropdownMenuContent,
+      DropdownMenuGroup,
+      DropdownMenuItem,
+      DropdownMenuLabel,
+      DropdownMenuPortal,
+      DropdownMenuSeparator,
+      DropdownMenuShortcut,
+      DropdownMenuSub,
+      DropdownMenuSubContent,
+      DropdownMenuSubTrigger,
+      DropdownMenuTrigger,
+      SidebarLink
     },
 
     props: {
@@ -148,41 +151,41 @@ export default {
         auth: Array,
     },
 
-    setup(props) {
-        const page = usePage();
-        const isSidebarOpen = ref(false);
-        const isDesktop = ref(window.innerWidth >= 768);
-        const { user, isAuthenticated } = useAuth()
-        const toggleSidebar = () => {
-            isSidebarOpen.value = !isSidebarOpen.value;
-        };
+    setup() {
+      const isSidebarOpen = ref(false);
+      const isDesktop = ref(window.innerWidth >= 768);
+      const { user, isAuthenticated } = useAuth()
+      const toggleSidebar = () => {
+          isSidebarOpen.value = !isSidebarOpen.value;
+      };
 
-        const logout = () => {
-            router.post('/logout', {}, {
-                onSuccess: () => toast.success("Logout successfully")
-            })
-        }
+      const logoutForm = useForm({})
+      const logout = () => {
+          logoutForm.post(route('logout'), {
+              onSuccess: () => toast.success("Logout successfully")
+          })
+      }
 
-        const handleResize = () => {
-            isDesktop.value = window.innerWidth >= 768;
-            if (isDesktop.value) isSidebarOpen.value = false;
-        };
+      const handleResize = () => {
+          isDesktop.value = window.innerWidth >= 768;
+          if (isDesktop.value) isSidebarOpen.value = false;
+      };
 
-        onMounted(() => {
-            window.addEventListener('resize', handleResize);
-        });
+      onMounted(() => {
+          window.addEventListener('resize', handleResize);
+      });
 
-        onUnmounted(() => {
-            window.removeEventListener('resize', handleResize);
-        });
+      onUnmounted(() => {
+          window.removeEventListener('resize', handleResize);
+      });
 
         return {
-            user,
-            isAuthenticated,
-            isSidebarOpen,
-            toggleSidebar,
-            isDesktop,
-            logout
+          user,
+          isAuthenticated,
+          isSidebarOpen,
+          toggleSidebar,
+          isDesktop,
+          logout
         };
     },
 };

@@ -18,7 +18,11 @@ class OrganizationService
     }
 
     public function getLatestOrganizationsPaginate() {
-        return Auth::user()->organizations()->latest()->paginate(5);
+        return Auth::user()->organizations()->withCount('members')->latest()->paginate(5);
+    }
+
+    public function getOrganizationMembers(Organization $organization) {
+        return $organization->loadCount('members')->load('members');
     }
 
     public function createOrganization($data) {
@@ -34,7 +38,29 @@ class OrganizationService
         ]);
     }
 
-    public function createOrganizationMember($data) {
+    public function getOrganization($code) {
+        return Organization::where('code', $code)->first();
+    }
 
+    public function isAlreadyMember($organization, $userId) {
+        return OrganizationMember::where('organization_id', $organization->id)->where('user_id', $userId)->exists();
+    }
+
+    public function joinOrganization($code) {
+        $organization = $this->getOrganization($code);
+        $isAlreadyMember = $this->isAlreadyMember($organization, Auth::id());
+
+        if ($isAlreadyMember) {
+            return back()->withErrors(['code', 'You have already joined the organization']);
+        } else {
+            return $this->createOrganizationMember($organization->id, Auth::id());
+        }
+    }
+
+    public function createOrganizationMember($organizationId, $userId) {
+        return OrganizationMember::create([
+            'organization_id' => $organizationId,
+            'user_id' => $userId,
+        ]);
     }
 }

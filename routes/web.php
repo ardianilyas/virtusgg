@@ -42,5 +42,8 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')->group(function () {
    Route::get('/', [DashboardIndexController::class, 'index'])->name('index');
 
+   // Route organizations
    Route::resource('organizations', OrganizationController::class);
+   Route::post('/organizations/join', [OrganizationController::class, 'join'])->name('organizations.join');
+
 });
