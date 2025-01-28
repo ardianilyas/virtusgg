@@ -26,7 +26,7 @@ class SendOrganizationJoinRequestNotification
     {
         $creator = User::where('id', $event->organization->creator_id)->first();
 
-        $this->sendJoinRequestedEmail($event->user, $event);
+        $this->sendJoinRequestedEmail($creator, $event);
     }
 
     protected function sendJoinRequestedEmail(User $user, $event) {

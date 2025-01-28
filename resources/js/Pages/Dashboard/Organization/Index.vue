@@ -1,9 +1,12 @@
 <template>
     <DashboardLayout title="Organization">
 
-        <template #desc>Manage your organization here.</template>
+        <template #desc>Manage your organization here</template>
 
         <Card class="my-6">
+          <div v-for="notif in notifs" :key="notif">
+            {{ notif }}
+          </div>
             <div class="flex gap-2">
               <ButtonCreate>
                 <Link :href="route('dashboard.organizations.create')">Create new organization</Link>
@@ -96,7 +99,7 @@
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import { displayNumber } from "@/helpers/helpers.js";
 import { Button } from "@/components/ui/button/index.js";
-import { Link, useForm } from "@inertiajs/inertia-vue3";
+import { Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import Card from "@/components/Card.vue";
 import {
   Table,
@@ -128,10 +131,11 @@ import Pagination from "@/components/Pagination.vue";
 import { Label } from "@/components/ui/label/index.js";
 import { Input } from "@/components/ui/input/index.js";
 import InputError from "@/components/InputError.vue";
-import { onMounted } from "vue";
-import { usePage } from "@inertiajs/inertia-vue3";
+import { onMounted, ref } from "vue";
 
 const { props } = usePage()
+const userId = props.value.auth.user.id
+const notifs = ref([])
 
 const deleteForm = useForm({})
 
@@ -151,6 +155,12 @@ const submitDelete = (id) => {
     onSuccess: () => toast.success("Organization deleted successfully")
   })
 }
+
+onMounted(() => {
+  Echo.private(`request.join.${userId}`).listen("OrganizationJoinRequested", (event) => {
+    toast.info(event.message)
+  })
+})
 
 defineProps({
     organizations: Object
