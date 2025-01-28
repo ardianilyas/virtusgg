@@ -8,6 +8,7 @@ use App\Models\Organization;
 use App\Models\OrganizationMember;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class OrganizationService
 {
@@ -48,14 +49,28 @@ class OrganizationService
         return OrganizationMember::where('organization_id', $organization->id)->where('user_id', $userId)->exists();
     }
 
+    public function isAlreadyRequested(User $user, Organization $organization) {
+        return $user->requestedOrganizations()->where('organization_id', $organization->id)->exists();
+    }
+
+    public function createJoinOrganizationRequest(User $user, Organization $organization): void {
+        $user->requestedOrganizations()->attach($organization->id, [
+            'id' => Str::uuid()->toString(),
+        ]);
+    }
+
     public function requestToJoinOrganization($code) {
         $organization = $this->getOrganization($code);
         $user = Auth::user();
-        $isAlreadyMember = $this->isAlreadyMember($organization, Auth::id());
+        $isAlreadyMember = $this->isAlreadyMember($organization, $user->id);
+        $isAlreadyRequested = $this->isAlreadyRequested($user, $organization);
 
         if ($isAlreadyMember) {
             return back()->withErrors(['code', 'You have already joined the organization']);
+        } elseif ($isAlreadyRequested) {
+            return back()->withErrors(['code', 'You have already requested to the organization, please wait until the owner approved']);
         } else {
+            $this->createJoinOrganizationRequest($user, $organization);
             $this->sendEventRequestJoinOrganization($user, $organization);
         }
     }

@@ -141,7 +141,7 @@ const joinForm = useForm({
 
 const submitJoin = () => {
   joinForm.post(route('dashboard.organization.request'), {
-    onSuccess: () => toast.success("Success join organization"),
+    onSuccess: () => toast.success("Request sent successfully"),
     onError: (err) => toast.error(err.code ?? err[1])
   })
 }
