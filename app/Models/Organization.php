@@ -28,9 +28,9 @@ class Organization extends Model
         ];
     }
 
-    public function owner(): BelongsTo
+    public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'owner_id');
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     public function members(): BelongsToMany {

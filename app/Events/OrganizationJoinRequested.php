@@ -9,10 +9,11 @@ use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class OrganizationJoinRequested
+class OrganizationJoinRequested implements ShouldBroadcastNow
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -35,7 +36,15 @@ class OrganizationJoinRequested
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new PrivateChannel("request.join.{$this->organization->creator->id}"),
+        ];
+    }
+
+    public function broadcastWith(): array {
+        return [
+            'user' => $this->user,
+            'organization' => $this->organization,
+            'message' => "{$this->user->name} has requested to join your organization"
         ];
     }
 }
