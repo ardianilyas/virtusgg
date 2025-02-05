@@ -61,6 +61,11 @@
                                       </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
+                                      <Link :href="route('dashboard.organization.requests', organization.id)">
+                                        Requests
+                                      </Link>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem>
                                       <Link :href="route('dashboard.organizations.edit', organization.id)">Edit</Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>

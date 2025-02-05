@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Organization;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,8 @@ class RequestJoinOrganizationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'organization_id' => Organization::all()->random()->id,
+            'user_id' => User::factory()->create(),
         ];
     }
 }

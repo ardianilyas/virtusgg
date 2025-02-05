@@ -46,5 +46,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
    Route::resource('organizations', OrganizationController::class);
    Route::post('/organization/request', [OrganizationController::class, 'request'])->name('organization.request');
    Route::post('/organizations/join', [OrganizationController::class, 'join'])->name('organizations.join');
+   Route::get('/organization/{organization}/requests', [OrganizationController::class, 'requests'])->name('organization.requests');
 
+   Route::get('/request-join/{requestJoin}/{status}', [OrganizationController::class, 'changeStatus'])->name('organization.changeStatus');
 });

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Enum\OrganizationMemberRoleEnum;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
+use App\Models\RequestJoinOrganization;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -51,5 +52,7 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         });
+
+        RequestJoinOrganization::factory(20)->create();
     }
 }

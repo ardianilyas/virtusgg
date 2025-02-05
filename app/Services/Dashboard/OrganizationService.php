@@ -4,8 +4,10 @@ namespace App\Services\Dashboard;
 
 use App\Enum\OrganizationMemberRoleEnum;
 use App\Events\OrganizationJoinRequested;
+use App\Events\OrganizationJoinRequestStatusUpdate;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
+use App\Models\RequestJoinOrganization;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -85,5 +87,16 @@ class OrganizationService
             'organization_id' => $organizationId,
             'user_id' => $userId,
         ]);
+    }
+
+    public function updateRequestJoinStatus(RequestJoinOrganization $requestJoinOrganization, $status) {
+        OrganizationJoinRequestStatusUpdate::dispatch($requestJoinOrganization->user, $requestJoinOrganization->organization, $status);
+
+        if($status === 'accepted') {
+            $this->createOrganizationMember($requestJoinOrganization->organization_id, $requestJoinOrganization->user_id);
+            $requestJoinOrganization->delete();
+        }
+
+        $requestJoinOrganization->update(['status' => $status]);
     }
 }

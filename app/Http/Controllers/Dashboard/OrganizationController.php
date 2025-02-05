@@ -9,8 +9,10 @@ use App\Http\Requests\Dashboard\Organization\CreateOrganizationRequest;
 use App\Http\Requests\Dashboard\Organization\JoinOrganizationRequest;
 use App\Http\Requests\Dashboard\Organization\UpdateOrganizationRequest;
 use App\Mail\OrganizationJoinRequestMail;
+use App\Mail\OrganizationJoinRequestUpdateMail;
 use App\Models\Organization;
 use App\Models\OrganizationMember;
+use App\Models\RequestJoinOrganization;
 use App\Services\Dashboard\OrganizationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,6 +56,16 @@ class OrganizationController extends Controller
 
     public function request(JoinOrganizationRequest $request, OrganizationService $organizationService) {
         $organizationService->requestToJoinOrganization($request->code);
+        return back();
+    }
+
+    public function requests(Organization $organization) {
+        $requesting_users = $organization->requestingUsers()->paginate(8);
+        return inertia('Dashboard/Organization/Request', compact('organization', 'requesting_users'));
+    }
+
+    public function changeStatus(RequestJoinOrganization $requestJoin, $status, OrganizationService $organizationService) {
+        $organizationService->updateRequestJoinStatus($requestJoin, $status);
         return back();
     }
 }
