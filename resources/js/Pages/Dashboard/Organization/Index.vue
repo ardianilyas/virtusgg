@@ -4,13 +4,11 @@
         <template #desc>Manage your organization here</template>
 
         <Card class="my-6">
-          <div v-for="notif in notifs" :key="notif">
-            {{ notif }}
-          </div>
-            <div class="flex gap-2">
-              <ButtonCreate>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
+              <ButtonCreate class="mb-0">
                 <Link :href="route('dashboard.organizations.create')">Create new organization</Link>
               </ButtonCreate>
+              <Input class="max-w-sm" placeholder="Search organization name" v-model="query" />
             </div>
             <div class="mb-3 max-w-xs">
               <form @submit.prevent="submitJoin">
@@ -36,7 +34,7 @@
                         <TableHead>Actions</TableHead>
                     </TableRow>
                 </TableHeader>
-                <TableBody>
+                <TableBody v-if="organizations.data.length > 0">
                     <TableRow v-for="(organization, index) in organizations.data" :key="organization.id">
                         <TableCell>{{ displayNumber(organizations, index) }}</TableCell>
                         <TableCell>{{ organization.name }}</TableCell>
@@ -94,6 +92,13 @@
                         </TableCell>
                     </TableRow>
                 </TableBody>
+                <TableBody class="text-center font-medium py-3" v-else>
+                  <TableRow>
+                    <TableCell colSpan="8">
+                      Organization empty / not found
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
             </Table>
           <Pagination :links="organizations" />
         </Card>
@@ -137,10 +142,12 @@ import { Label } from "@/components/ui/label/index.js";
 import { Input } from "@/components/ui/input/index.js";
 import InputError from "@/components/InputError.vue";
 import { onMounted, ref } from "vue";
+import { useSearch } from "@/composables/useSearch.js";
 
 const { props } = usePage()
 const userId = props.value.auth.user.id
-const notifs = ref([])
+
+const { query } = useSearch()
 
 const deleteForm = useForm({})
 

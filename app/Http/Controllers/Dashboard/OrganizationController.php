@@ -19,8 +19,14 @@ use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
-    public function index(OrganizationService $organizationService) {
-        $organizations = $organizationService->getLatestOrganizationsPaginate();
+    public function index(OrganizationService $organizationService, Request $request) {
+        $organizations = [];
+        if($request->has('search')) {
+            $organizations = Organization::query()->where('name', 'like', '%' . $request->search . '%')->paginate(5);
+        } else {
+            $organizations = $organizationService->getLatestOrganizationsPaginate();
+        }
+
         return inertia('Dashboard/Organization/Index', compact('organizations'));
     }
 
