@@ -3,26 +3,21 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Enum\OrganizationStatusEnum;
-use App\Events\OrganizationJoinRequested;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\Organization\CreateOrganizationRequest;
 use App\Http\Requests\Dashboard\Organization\JoinOrganizationRequest;
 use App\Http\Requests\Dashboard\Organization\UpdateOrganizationRequest;
-use App\Mail\OrganizationJoinRequestMail;
-use App\Mail\OrganizationJoinRequestUpdateMail;
 use App\Models\Organization;
-use App\Models\OrganizationMember;
 use App\Models\RequestJoinOrganization;
 use App\Services\Dashboard\OrganizationService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
     public function index(OrganizationService $organizationService, Request $request) {
         $organizations = [];
         if($request->has('search')) {
-            $organizations = Organization::query()->where('name', 'like', '%' . $request->search . '%')->paginate(5);
+            $organizations = $organizationService->searchOrganizations($request->search);
         } else {
             $organizations = $organizationService->getLatestOrganizationsPaginate();
         }
@@ -50,8 +45,9 @@ class OrganizationController extends Controller
         return inertia('Dashboard/Organization/Edit', compact('organization', 'statuses'));
     }
 
-    public function update(UpdateOrganizationRequest $request, Organization $organization) {
-        $organization->update($request->validated());
+    public function updateForm(UpdateOrganizationRequest $request, Organization $organization, OrganizationService $organizationService) {
+        $organizationService->updateOrganization($organization, $request->validated());
+
         return redirect()->route('dashboard.organizations.index');
     }
 

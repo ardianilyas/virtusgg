@@ -10,6 +10,7 @@ use App\Models\OrganizationMember;
 use App\Models\RequestJoinOrganization;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class OrganizationService
@@ -26,12 +27,40 @@ class OrganizationService
         return Auth::user()->organizations()->withCount('members')->latest()->paginate(5);
     }
 
+    public function searchOrganizations($query) {
+        return Auth::user()->organizations()->withCount('members')->where('name', 'LIKE', "%$query%")->latest()->paginate(5);
+    }
+
     public function getOrganizationMembers(Organization $organization) {
         return $organization->loadCount('members')->load('members');
     }
 
+    public function storeImage($data, $path) {
+        $hashName = $data->hashName();
+        $data->storeAs($path, $hashName, 'public');
+        return $hashName;
+    }
+
     public function createOrganization($data) {
+        if ($data['image']) {
+            $hashName = $this->storeImage($data['image'], 'organizations');
+            $data['image'] = $hashName;
+        }
         return Auth::user()->organizations()->create($data);
+    }
+
+    public function updateOrganization(Organization $organization, $data) {
+        $filePath = 'organizations/' . $organization->image;
+        if ($data['image']) {
+            if (Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+            $hashName = $this->storeImage($data['image'], 'organizations');
+            $data['image'] = $hashName;
+            $data['image_path'] = asset('storage/organizations/' . $hashName);
+        }
+
+        $organization->update($data);
     }
 
     public function createOrganizationOwner($organizationId) {

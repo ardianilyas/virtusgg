@@ -59,7 +59,7 @@
                                       </Link>
                                     </DropdownMenuItem>
                                     <DropdownMenuItem>
-                                      <Link :href="route('dashboard.organization.requests', organization.id)">
+                                      <Link :href="route('dashboard.organizations.requests', organization.id)">
                                         Requests
                                       </Link>
                                     </DropdownMenuItem>
@@ -93,11 +93,7 @@
                     </TableRow>
                 </TableBody>
                 <TableBody class="text-center font-medium py-3" v-else>
-                  <TableRow>
-                    <TableCell colSpan="8">
-                      Organization empty / not found
-                    </TableCell>
-                  </TableRow>
+                  <EmptyRow col-span="8">Organization empty / not found</EmptyRow>
                 </TableBody>
             </Table>
           <Pagination :links="organizations" />
@@ -143,6 +139,7 @@ import { Input } from "@/components/ui/input/index.js";
 import InputError from "@/components/InputError.vue";
 import { onMounted, ref } from "vue";
 import { useSearch } from "@/composables/useSearch.js";
+import EmptyRow from "@/components/EmptyRow.vue";
 
 const { props } = usePage()
 const userId = props.value.auth.user.id

@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Organization;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class OrganizationObserver
@@ -13,6 +14,9 @@ class OrganizationObserver
     public function created(Organization $organization): void
     {
         $organization->code = strtoupper(Str::random(6));
+        if ($organization->image) {
+            $organization->image_path = asset('storage/organizations/' . $organization->image);
+        }
 
         while (Organization::where('code', $organization->code)->exists()) {
             $organization->code = strtoupper(Str::random(6));
@@ -26,7 +30,7 @@ class OrganizationObserver
      */
     public function updated(Organization $organization): void
     {
-        //
+
     }
 
     /**
@@ -34,7 +38,10 @@ class OrganizationObserver
      */
     public function deleted(Organization $organization): void
     {
-        //
+        $filePath = 'organizations/' . $organization->image;
+        if (Storage::disk('public')->exists($filePath)) {
+            Storage::disk('public')->delete($filePath);
+        }
     }
 
     /**

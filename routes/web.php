@@ -44,9 +44,10 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->name('dashboard.')
 
    // Route organizations
    Route::resource('organizations', OrganizationController::class);
+   Route::post('/organizations/{organization}/edit', [OrganizationController::class, 'updateForm'])->name('organizations.updateForm');
    Route::post('/organization/request', [OrganizationController::class, 'request'])->name('organization.request');
    Route::post('/organizations/join', [OrganizationController::class, 'join'])->name('organizations.join');
-   Route::get('/organization/{organization}/requests', [OrganizationController::class, 'requests'])->name('organization.requests');
+   Route::get('/organizations/{organization}/requests', [OrganizationController::class, 'requests'])->name('organizations.requests');
 
    Route::get('/request-join/{requestJoin}/{status}', [OrganizationController::class, 'changeStatus'])->name('organization.changeStatus');
 });

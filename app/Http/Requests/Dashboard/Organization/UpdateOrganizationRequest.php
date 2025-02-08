@@ -23,6 +23,7 @@ class UpdateOrganizationRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:3|max:255',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,svg,webp|max:2048',
             'description' => 'required|string|min:3|max:255',
             'status' => 'required|in:active,inactive',
         ];

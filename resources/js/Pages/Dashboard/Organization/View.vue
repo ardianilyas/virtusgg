@@ -3,8 +3,15 @@
     <template #desc>Lorem ipsum dolor sit amet, consectetur.</template>
     <BackLink :href="route('dashboard.organizations.index')">Back to organizations</BackLink>
     <Card>
-      <h2 class="text-3xl text-neutral-800 font-medium">{{ organization.name }}</h2>
-      <p class="text-neutral-600 leading-relaxed">{{ organization.description }}</p>
+      <div class="flex items-center p-2 gap-6">
+        <div>
+          <img v-if="organization.image_path" :src="organization.image_path" width="50" />
+        </div>
+        <div>
+          <h2 class="text-3xl text-neutral-800 font-medium">{{ organization.name }}</h2>
+          <p class="text-neutral-600 leading-relaxed">{{ organization.description }}</p>
+        </div>
+      </div>
 
       <div class="my-5 max-w-sm px-4">
         <h4 class="mb-3 text-xl font-medium text-neutral-800">Members</h4>
