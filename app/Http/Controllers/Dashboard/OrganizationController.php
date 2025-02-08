@@ -16,13 +16,14 @@ use App\Models\RequestJoinOrganization;
 use App\Services\Dashboard\OrganizationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class OrganizationController extends Controller
 {
     public function index(OrganizationService $organizationService, Request $request) {
         $organizations = [];
         if($request->has('search')) {
-            $organizations = Organization::query()->where('name', 'like', '%' . $request->search . '%')->paginate(5);
+            $organizations = $organizationService->searchOrganizations($request->search);
         } else {
             $organizations = $organizationService->getLatestOrganizationsPaginate();
         }
@@ -50,8 +51,9 @@ class OrganizationController extends Controller
         return inertia('Dashboard/Organization/Edit', compact('organization', 'statuses'));
     }
 
-    public function update(UpdateOrganizationRequest $request, Organization $organization) {
-        $organization->update($request->validated());
+    public function updateForm(UpdateOrganizationRequest $request, Organization $organization, OrganizationService $organizationService) {
+        $organizationService->updateOrganization($organization, $request->validated());
+
         return redirect()->route('dashboard.organizations.index');
     }
 

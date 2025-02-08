@@ -14,6 +14,11 @@
           <InputError v-if="form.errors.name">{{ form.errors.name }}</InputError>
         </div>
         <div>
+          <Label>Image</Label>
+          <Input type="file" @input="form.image = $event.target.files[0]" />
+          <InputError v-if="form.errors.image">{{ form.errors.image }}</InputError>
+        </div>
+        <div>
           <Label>Description</Label>
           <Input v-model="form.description" type="text" placeholder="A short description" />
           <InputError v-if="form.errors.description">{{ form.errors.description }}</InputError>
@@ -43,7 +48,7 @@
 <script setup>
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import Card from "@/components/Card.vue";
-import { Link, useForm } from '@inertiajs/inertia-vue3'
+import { useForm } from '@inertiajs/inertia-vue3'
 import { Label } from "@/components/ui/label/index.js";
 import { Input } from "@/components/ui/input/index.js";
 import { Button } from "@/components/ui/button/index.js";
@@ -67,11 +72,13 @@ const props = defineProps({
 const form = useForm({
   name: props.organization.name,
   description: props.organization.description,
-  status: props.organization.status
+  status: props.organization.status,
+  image: null,
 })
 
 const submit = () => {
-  form.patch(route('dashboard.organizations.update', props.organization.id), {
+  console.log(form)
+  form.post(route('dashboard.organizations.updateForm', props.organization.id), {
     onSuccess: () => toast.success("Organization updated successfully")
   })
 }

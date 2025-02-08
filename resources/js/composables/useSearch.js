@@ -2,7 +2,7 @@ import { ref, watch } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import { debounce } from "@/utils/debounce.js";
 
-export function useSearch(initialSearch = '', delay = 300) {
+export function useSearch(initialSearch = '', delay = 600) {
     const query = ref(initialSearch);
     const debouncedSearch = debounce((newQuery) => {
         Inertia.get(route(route().current()), { search: newQuery }, {

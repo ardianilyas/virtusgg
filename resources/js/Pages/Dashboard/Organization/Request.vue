@@ -1,8 +1,8 @@
 <template>
   <DashboardLayout title="Request List">
     <template #desc>Request list for <b>{{ organization.name }}</b> </template>
-
-    <Card class="my-6">
+    <BackLink :href="route('dashboard.organizations.index')">Back to previous</BackLink>
+    <Card class="my-4">
       <Table>
         <TableCaption></TableCaption>
         <TableHeader>
@@ -14,7 +14,7 @@
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody v-if="requesting_users.data.length > 0">
           <TableRow v-for="(user, index) in requesting_users.data" :key="user.id">
             <TableCell>{{ displayNumber(requesting_users, index) }}</TableCell>
             <TableCell>{{ user.name }}</TableCell>
@@ -39,6 +39,9 @@
               </DropdownMenu>
             </TableCell>
           </TableRow>
+        </TableBody>
+        <TableBody v-else>
+          <EmptyRow col-span="5">Request empty</EmptyRow>
         </TableBody>
       </Table>
       <Pagination :links="requesting_users" />
@@ -71,6 +74,8 @@ import {
 } from "@/components/ui/dropdown-menu/index.js";
 import { Button } from "@/components/ui/button/index.js";
 import { toast } from "vue-sonner";
+import BackLink from "@/components/BackLink.vue";
+import EmptyRow from "@/components/EmptyRow.vue";
 
 defineProps({
   organization: Object,

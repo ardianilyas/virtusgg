@@ -1,13 +1,18 @@
 <template>
   <DashboardLayout title="Create Organization">
     <template #desc>Create a new organization</template>
-
+    <BackLink :href="route('dashboard.organizations.index')">Back to previous</BackLink>
     <Card>
       <form class="[&>div]:mb-3" @submit.prevent="submit">
         <div>
           <Label>Name</Label>
           <Input v-model="form.name" type="text" placeholder="Virtus.inc" />
           <InputError v-if="form.errors.name">{{ form.errors.name }}</InputError>
+        </div>
+        <div>
+          <Label>Image</Label>
+          <Input type="file" @input="form.image = $event.target.files[0]" />
+          <InputError v-if="form.errors.image">{{ form.errors.image }}</InputError>
         </div>
         <div>
           <Label>Description</Label>
@@ -25,6 +30,7 @@
 <script setup>
 import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 import Card from "@/components/Card.vue";
+import BackLink from "@/components/BackLink.vue";
 import { Link, useForm } from '@inertiajs/inertia-vue3'
 import { Label } from "@/components/ui/label/index.js";
 import { Input } from "@/components/ui/input/index.js";
@@ -34,8 +40,9 @@ import InputError from "@/components/InputError.vue";
 
 const form = useForm({
   name: '',
+  image: null,
   description: '',
-})
+});
 
 const submit = () => {
   form.post(route('dashboard.organizations.store'), {
