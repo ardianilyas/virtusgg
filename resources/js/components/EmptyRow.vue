@@ -11,7 +11,7 @@ import { TableCell, TableRow } from "@/components/ui/table/index.js";
 
 defineProps({
   colSpan: {
-    type: Number,
+    type: String,
     required: true
   }
 })
