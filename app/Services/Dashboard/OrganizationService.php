@@ -128,4 +128,10 @@ class OrganizationService
 
         $requestJoinOrganization->update(['status' => $status]);
     }
+
+    public function assignRoleProjectManager(Organization $organization, User $user) {
+        $orgMember = OrganizationMember::query()->where('organization_id', $organization->id)->where('user_id', $user->id)->first();
+        $orgMember->role = OrganizationMemberRoleEnum::PROJECT_MANAGER->value;
+        $orgMember->save();
+    }
 }

@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Enum\OrganizationMemberRoleEnum;
 use App\Enum\OrganizationStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\Organization\CreateOrganizationRequest;
 use App\Http\Requests\Dashboard\Organization\JoinOrganizationRequest;
 use App\Http\Requests\Dashboard\Organization\UpdateOrganizationRequest;
 use App\Models\Organization;
+use App\Models\OrganizationMember;
 use App\Models\RequestJoinOrganization;
+use App\Models\User;
 use App\Services\Dashboard\OrganizationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class OrganizationController extends Controller
 {
@@ -46,6 +50,9 @@ class OrganizationController extends Controller
     }
 
     public function updateForm(UpdateOrganizationRequest $request, Organization $organization, OrganizationService $organizationService) {
+        if (!Gate::allows('update', $organization)) {
+            abort(403);
+        }
         $organizationService->updateOrganization($organization, $request->validated());
 
         return redirect()->route('dashboard.organizations.index');
@@ -68,6 +75,17 @@ class OrganizationController extends Controller
 
     public function changeStatus(RequestJoinOrganization $requestJoin, $status, OrganizationService $organizationService) {
         $organizationService->updateRequestJoinStatus($requestJoin, $status);
+        return back();
+    }
+
+    public function assignRoleProjectManager(Organization $organization, User $user, OrganizationService $organizationService) {
+
+        if (!Gate::allows('assignRole', $organization)) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $organizationService->assignRoleProjectManager($organization, $user);
+
         return back();
     }
 }
