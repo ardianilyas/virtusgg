@@ -22,9 +22,14 @@
                           <DashboardIcon />
                       </template>
                   </SidebarLink>
-                  <SidebarLink :href="route('dashboard.organizations.index')" label="Organization" :isActive="route().current('dashboard.organizations.*')">
+                  <SidebarLink :href="route('dashboard.organizations.index')" label="Organizations" :isActive="route().current('dashboard.organizations.*')">
                       <template #icon>
                           <MixerVerticalIcon />
+                      </template>
+                  </SidebarLink>
+                  <SidebarLink :href="route('dashboard.teams.index')" label="Teams" :isActive="route().current('dashboard.teams.*')">
+                      <template #icon>
+                          <GlobeIcon />
                       </template>
                   </SidebarLink>
                 </nav>
@@ -91,7 +96,7 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import SidebarLink from '@/components/SidebarLink.vue';
 import DropdownSidebarLink from "@/components/DropdownSidebarLink.vue";
-import { Cross2Icon, DashboardIcon, HamburgerMenuIcon, HomeIcon, ReaderIcon, SunIcon, MoonIcon, BackpackIcon, MixerVerticalIcon } from '@radix-icons/vue';
+import { Cross2Icon, DashboardIcon, HamburgerMenuIcon, HomeIcon, ReaderIcon, SunIcon, MoonIcon, BackpackIcon, MixerVerticalIcon, GlobeIcon } from '@radix-icons/vue';
 import DropdownSidebar from "@/components/DropdownSidebar.vue";
 import {
     DropdownMenu,
@@ -119,6 +124,7 @@ export default {
       DropdownSidebarLink,
       Link,
       Toaster,
+      GlobeIcon,
       MixerVerticalIcon,
       HamburgerMenuIcon,
       BackpackIcon,
