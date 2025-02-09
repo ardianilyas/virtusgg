@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->foreignUuid('organization_id')->references('id')->on('organizations')->cascadeOnDelete();
             $table->foreignUuid('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->enum('role', array_column(OrganizationMemberRoleEnum::cases(), 'value'))->default(OrganizationMemberRoleEnum::MEMBER->value);
+            $table->string('role')->default(OrganizationMemberRoleEnum::MEMBER->value);
             $table->boolean('is_creator')->default(false);
             $table->timestamps();
         });
